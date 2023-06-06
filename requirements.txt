@@ -3,3 +3,4 @@ pandas
 ipython
 streamlit
 streamlit-aggrid
+scikit-learn
