@@ -9,6 +9,7 @@ import json
 
 import streamlit as st
 from st_aggrid import AgGrid
+import utils
 
 BEST_MOVIES = pd.read_csv("best_movies.csv")
 BEST_MOVIES.rename(
@@ -140,16 +141,18 @@ elif page == "rate some movies":
     query_movies = [m1,m2,m3,m4,m5]
     query_ratings = [r1,r2,r3,r4,r5]
     
-    user_query = dict(zip(query_movies,query_ratings))
+    user_query = dict(zip(query_movies, query_ratings))
+
+    final_query = {}
+    for k, v in user_query.items():
+        if k != "---":
+            final_query[k] = v
 
     # get user query
     st.markdown("###")
-    user_query_button = st.button(label="save user query") 
+    user_query_button = st.button(label="save user query")
     if user_query_button:
-        json.dump(
-            user_query,
-            open("user_query.json",'w')
-            )
+        json.dump(final_query, open("user_query.json", "w"))
         st.write("")
         st.write("user query saved successfully")
 
@@ -174,9 +177,9 @@ elif page == "Movie Recommendations":
         user_query = json.load(open("user_query.json"))
 
         if recommender == "NMF Recommender":
-            recommendations = recommend(user_query, NMF_MODEL, k=10)
+            recommendations = utils.recommend_nmf(user_query, NMF_MODEL, k=10)
         else:
-            recommendations = recommend(user_query, DISTANCE_MODEL, k=10)
+            recommendations = utils.recommend_col(user_query, DISTANCE_MODEL, k=10)
         
         st.write(recommendations)
 
