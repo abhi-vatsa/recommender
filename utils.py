@@ -2,15 +2,16 @@ import numpy as np
 import pandas as pd
 import pickle
 
-
-def recommend_nmf(user_query, k=10):
+with open("nmf_model.pkl", "rb") as file:
+        nmf_model = pickle.load(file)
+        
+def recommend_nmf(user_query,model = nmf_model, k=10):
     """
     Filters and recommends the top k movies for any given input query based
     on a trained NMF model.
     Returns a list of k movie ids.
     """
-    with open("nmf_model.pkl", "rb") as file:
-        nmf_model = pickle.load(file)
+    
 
     movies_title_df = pd.read_csv("./data/movie_title.csv", index_col=0)
 

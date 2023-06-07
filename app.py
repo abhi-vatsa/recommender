@@ -19,10 +19,10 @@ BEST_MOVIES.rename(
 TITLES = ["---"] + list(BEST_MOVIES['title'].sort_values()) 
 
 # load the models
-with open('knn_model.pkl', 'rb') as file:
-    DISTANCE_MODEL = pickle.load(file)
-with open('nmf_model.pkl', 'rb') as file:
-    NMF_MODEL = pickle.load(file)
+#with open('knn_model.pkl', 'rb') as file:
+    #DISTANCE_MODEL = pickle.load(file)
+#with open('nmf_model.pkl', 'rb') as file:
+    #NMF_MODEL = pickle.load(file)
 
 
 # sidebar
@@ -37,10 +37,10 @@ with st.sidebar:
     page = st.selectbox(
         "what would you like?",
         [
-            "wlcome page",
+            "welcome page",
             "popular movies",
             "rate some movies",
-            "recommended movies"
+            "recommend movies"
             ]
         ) 
 
@@ -159,7 +159,7 @@ elif page == "rate some movies":
 ##########################################################
 # Movie Recommendations
 ##########################################################
-elif page == "Movie Recommendations":
+elif page == "recommend movies":
     # title
     st.title("Movie Recommendations")
     col1, col2, col3, col4, col5 = st.columns([1, 5, 1, 5, 1])
@@ -177,9 +177,10 @@ elif page == "Movie Recommendations":
         user_query = json.load(open("user_query.json"))
 
         if recommender == "NMF Recommender":
-            recommendations = utils.recommend_nmf(user_query, NMF_MODEL, k=10)
+            print (recommender)
+            recommendations = utils.recommend_nmf(user_query)
         else:
-            recommendations = utils.recommend_col(user_query, DISTANCE_MODEL, k=10)
+            recommendations = utils.recommend_col(user_query)
         
         st.write(recommendations)
 
